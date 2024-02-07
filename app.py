@@ -3,6 +3,9 @@ from pymongo import MongoClient # Database connector
 from bson.objectid import ObjectId # For ObjectId to work
 from bson.errors import InvalidId # For catching InvalidId exception for ObjectId
 import os
+import sys
+sys.path.append('/home/akash/Desktop/githubrepo/python-sdk/keploy/integrations')
+import flaskCov
 
 mongodb_host = os.environ.get('MONGO_HOST', 'localhost')
 mongodb_port = int(os.environ.get('MONGO_PORT', '27017'))
@@ -11,6 +14,7 @@ db = client.camp2016    #Select the database
 todos = db.todo #Select the collection
 
 app = Flask(__name__)
+app.wsgi_app = flaskCov.CoverageMiddleware(app.wsgi_app)
 title = "TODO with Flask"
 heading = "ToDo Reminder"
 #modify=ObjectId()
